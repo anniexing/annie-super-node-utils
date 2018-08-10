@@ -22,7 +22,7 @@
     "url": "https://github.com/lxzhu/annie-node-utils/issues"
   },
   "homepage": "https://github.com/lxzhu/annie-node-utils#readme",
-  dependencies:{
+  "dependencies":{
     "mysql":"2.16.0",
     "pug": "2.0.3"
   }
