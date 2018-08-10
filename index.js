@@ -4,7 +4,7 @@ var rand = require("./rand.js");
 var hash = require("./hash.js");
 var staticFile = require("./static-file.js");
 var markdown = require("./markdown.js");
-
+var httpCode = require("./httpCode.js")
 module.exports={
   createMySql:function(options){
     return new MySqlUtils(options);
@@ -14,6 +14,7 @@ module.exports={
   },
   rand:rand,
   hash:hash,
+  httpCode:httpCode,
   staticFile:staticFile,
   markdown:markdown
 };
