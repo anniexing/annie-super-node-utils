@@ -1,6 +1,6 @@
 {
   "name": "annie-node-utils",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "utils module for annie.design",
   "main": "index.js",
   "scripts": {
