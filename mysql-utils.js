@@ -22,11 +22,21 @@ connection.query('UPDATE posts SET ...', function (error, results, fields) {
 
 */
 var pool = null;
+var defaultOptions = {}
+var importantOptions = {}
 
-function MysqlUtils(config) {
+function MySqlUtils(options) {    
+    //all member fields are stored in that.
+    var that={
+        options:options
+    };
 
-    if (pool == null) {
-        pool = mysql.createPool(config.mysql);
+    /*all private functions are declared inside constructor*/
+    function privateCreatePoolIfNotExists() {
+        var createPoolOptions = Object.assign({}, defaultOptions, that.options, importantOptions);
+        if (pool == null) {
+            pool = mysql.createPool(createPoolOptions);
+        }
     }
 
     function privateSetupQueryFormat(connection) {
@@ -41,9 +51,21 @@ function MysqlUtils(config) {
         };
     }
 
-    var privateGetConnection = util.promisify(pool.getConnection);
+    async function privateGetConnection() {
+        return new Promise((resolve, reject) => {
+            pool.getConnection(function(err, val) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(val);
+                }
+            });
+        });
+    }
 
-    this.query =  async function(sql, args) {
+    /* all public functions are declared as member of this object.*/
+    this.query = async function(sql, args) {
+        privateCreatePoolIfNotExists();
         var connection = await privateGetConnection();
         return new Promise(function(resolve, reject) {
             privateSetupQueryFormat(connection);
@@ -61,8 +83,13 @@ function MysqlUtils(config) {
         });
     };
 
-    
+    this.release = function() {
+        if (pool != null) {
+            pool.end();
+            pool = null;
+        }
+    }
 }
 
 //exports
-module.exports = MysqlUtils;
+module.exports = MySqlUtils;
