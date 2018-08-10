@@ -1,6 +1,6 @@
 {
   "name": "annie-node-utils",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "utils module for annie.design",
   "main": "index.js",
   "scripts": {
@@ -22,8 +22,8 @@
     "url": "https://github.com/lxzhu/annie-node-utils/issues"
   },
   "homepage": "https://github.com/lxzhu/annie-node-utils#readme",
-  "dependencies":{
-    "mysql":"2.16.0",
+  "dependencies": {
+    "mysql": "2.16.0",
     "pug": "2.0.3"
   }
 }
