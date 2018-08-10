@@ -1,0 +1,25 @@
+{
+  "name": "annie-node-utils",
+  "version": "1.0.0",
+  "description": "utils module for annie.design",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lxzhu/annie-node-utils.git"
+  },
+  "keywords": [
+    "annie",
+    "design",
+    "node",
+    "utils"
+  ],
+  "author": "Liangxiong Zhu; Annie Xing",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lxzhu/annie-node-utils/issues"
+  },
+  "homepage": "https://github.com/lxzhu/annie-node-utils#readme"
+}
