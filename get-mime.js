@@ -24,10 +24,11 @@ var defaultMimeMap = {
     ".mpeg": { "contentType": "video/mpeg", "encoding": "binary" },
     ".m4v": { "contentType": "video/mp4", "encoding": "binary" },
 
-    ".ttf": { "contentType": "font/ttf", "encoding": "utf8" },
-    ".eot": { "contentType": "font/eot", "encoding": "utf8" },
-    ".otf": { "contentType": "font/otf", "encoding": "utf8" },
-    ".woff": { "contentType": "font/woff", "encoding": "utf8" },
+    ".ttf": { "contentType": "font/ttf", "encoding": "binary" },
+    ".eot": { "contentType": "font/eot", "encoding": "binary" },
+    ".otf": { "contentType": "font/otf", "encoding": "binary" },
+    ".woff": { "contentType": "font/woff", "encoding": "binary" },
+    ".woff2": { "contentType": "font/woff2", "encoding": "binary" },
 
     ".zip": { "contentType": "application/zip", "encoding": "binary" },
     ".bin": { "contentType": "application/octet-stream", "encoding": "binary" }
