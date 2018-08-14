@@ -1,62 +1,56 @@
 const util = require('util');
-const fsaa=require('./fsaa.js');
-const path=require('path');
+const fsaa = require('./fsaa.js');
+const path = require('path');
+const defaultMimeMap = require("./get-mime.js")();
 
+module.exports = function(baseDir, options) {
+    options = Object.assign({}, options);
+    var includeMimeMap = Object.assign({}, defaultMimeMap, options.includeMimeMap);
+    // excludeMimeMap is an array.
+    var excludeMimeMap = [];
+    if (options.excludeMimeMap) {
+        excludeMimeMap = excludeMimeMap.concat(options.excludeMimeMap);
+    }
 
+    return async function(req, res, next) {
 
-var defaultMimeMap = {
-    ".html": { "contentType": "text/html", "encoding": "utf8" },    
-    ".js": { "contentType": "text/javascript", "encoding": "utf8" },
-    ".css": { "contentType": "text/css", "encoding": "utf8" },
-    ".json": { "contentType": "text/json", "encoding": "utf8" },
-    ".jpg": { "contentType": "image/jpg", "encoding": "binary" },
-    ".png": { "contentType": "image/png", "encoding": "binary" },
-    ".bmp": { "contentType": "image/bmp", "encoding": "binary" },
-    ".gif": { "contentType": "image/gif", "encoding": "binary" },
-    ".svg":{"contentType":"text/xml","encoding":"utf8"}
-}
-
-module.exports = function(baseDir,options) {
-    var mimeMap = Object.assign({},defaultMimeMap,options.mimeMap);
-    return async function(req, res,next) {
-
-        console.log("try access "+req.path);
+        console.log("try access " + req.path);
         var relPath = req.path;
         // always remove ending slash
-        if(relPath.endsWith("/"))
-        {
-            relPath=relPath.substring(0,relPath.length-1);
+        if (relPath.endsWith("/")) {
+            relPath = relPath.substring(0, relPath.length - 1);
             console.log(`rewrite from ${req.path} to ${relPath}`);
         }
 
         // make an absolute path
         var absPath = path.join(baseDir, relPath);
         console.log(`expand to absolute file path ${absPath}`);
-        try{
+        try {
             var stat = await fsaa.stat(absPath);
-            if(stat.isDirectory()){
-                absPath=absPath+"/index.html";
-                stat = await fsaa.stat(absPath);                
+            if (stat.isDirectory()) {
+                absPath = absPath + "/index.html";
+                stat = await fsaa.stat(absPath);
             }
             var extname = path.extname(absPath);
-            var mime=mimeMap[extname];
-            if(mime){
-                var data=await fsaa.readFile(absPath);
+            var isMimeExcluded = excludeMimeMap.includes(extname);
+            var mime = includeMimeMap[extname];
+            if (!isMimeExcluded && mime) {
+                var data = await fsaa.readFile(absPath);
                 res.writeHead(200, { 'Content-Type': mime.contentType });
                 res.end(data, mime.encoding);
-            }else{
+            } else {
                 console.log(`file extension ${extname} is not supported.`)
                 next();
             }
 
-        }catch(ex){
-            console.log(ex);             
-            if("enoent"==ex.code){
+        } catch (ex) {
+            console.log(ex);
+            if ("enoent" == ex.code) {
                 next();
-            }else{
+            } else {
                 res.writeHead(503);
                 res.end("oops!");
-            }          
+            }
         }
     }
 }
