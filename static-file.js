@@ -4,7 +4,7 @@ const path=require('path');
 
 
 
-var mimeMap = {
+var defaultMimeMap = {
     ".html": { "contentType": "text/html", "encoding": "utf8" },    
     ".js": { "contentType": "text/javascript", "encoding": "utf8" },
     ".css": { "contentType": "text/css", "encoding": "utf8" },
@@ -13,9 +13,11 @@ var mimeMap = {
     ".png": { "contentType": "image/png", "encoding": "binary" },
     ".bmp": { "contentType": "image/bmp", "encoding": "binary" },
     ".gif": { "contentType": "image/gif", "encoding": "binary" },
+    ".svg":{"contentType":"text/xml","encoding":"utf8"}
 }
 
 module.exports = function(baseDir,options) {
+    var mimeMap = Object.assign({},defaultMimeMap,options.mimeMap);
     return async function(req, res,next) {
 
         console.log("try access "+req.path);
